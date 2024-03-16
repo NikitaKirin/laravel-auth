@@ -15,7 +15,7 @@
                                  placeholder="********"/>
                 </x-form.item>
                 <x-form.item>
-                    <x-form.check name="agreement">
+                    <x-form.check name="remember">
                         Запомнить меня
                     </x-form.check>
                 </x-form.item>

@@ -9,9 +9,9 @@ class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->only(['email', 'password']);
 
-        if (!Auth::attempt($data)) {
+        if (!Auth::attempt($data, $request->boolean('remember'))) {
             return back()->withErrors([
                 'email' => 'Неверный email или пароль',
             ])->onlyInput('email');
