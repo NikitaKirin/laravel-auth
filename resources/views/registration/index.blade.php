@@ -9,28 +9,28 @@
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <x-card>
                 <x-card.body>
-                    <x-form action="#" method="POST">
+                    <x-form action="{{ route('registration.store') }}" method="POST" novalidate="true">
                         <x-form.item>
                             <x-form.label for="name">Ваше имя</x-form.label>
-                            <x-form.input id="name" name="name" type="text" required placeholder="Имя" autofocus/>
+                            <x-form.text id="name" name="first_name" type="text" required placeholder="Имя" autofocus/>
                         </x-form.item>
                         <x-form.item>
                             <x-form.label for="email">Ваш email</x-form.label>
-                            <x-form.input id="email" name="email" type="email" autocomplete="email" required
+                            <x-form.text id="email" name="email" type="email" autocomplete="email" required
                                           placeholder="examlpe@mail.com"/>
                         </x-form.item>
                         <x-form.item>
                             <x-form.label for="password">Пароль</x-form.label>
-                            <x-form.input id="password" name="password" type="password" required
+                            <x-form.text id="password" name="password" type="password" required
                                           placeholder="********"/>
                         </x-form.item>
                         <x-form.item>
                             <x-form.label for="password_confirmation">Повторите пароль</x-form.label>
-                            <x-form.input id="password_confirmation" name="password_confirmation"
+                            <x-form.text id="password_confirmation" name="password_confirmation"
                                           type="password" required placeholder="********"/>
                         </x-form.item>
                         <x-form.item>
-                            <x-form.check>
+                            <x-form.check name="agreement">
                                 Пользовательское соглашение
                             </x-form.check>
                         </x-form.item>
