@@ -8,16 +8,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/registration');
 
-Route::view('/registration', 'registration.index')->name('registration');
+Route::middleware('guest')->group(function () {
 
-Route::post('/registration', RegistrationController::class)->name('registration.store');
+    Route::view('/registration', 'registration.index')->name('registration');
 
-Route::view('/login', 'login.index')->name('login');
+    Route::post('/registration', RegistrationController::class)->name('registration.store');
 
-Route::post('/login', LoginController::class)->name('login.store');
+    Route::view('/login', 'login.index')->name('login');
 
-Route::redirect('/user', '/user/settings')->name('user');
+    Route::post('/login', LoginController::class)->name('login.store');
 
-Route::get('/user/settings', [SettingsController::class, 'index'])->name('user.settings');
+});
 
-Route::post('/logout', LogoutController::class)->name('logout');
+Route::middleware('auth')->group(function () {
+
+    Route::redirect('/user', '/user/settings')->name('user');
+
+    Route::get('/user/settings', [SettingsController::class, 'index'])->name('user.settings');
+
+    Route::post('/logout', LogoutController::class)->name('logout');
+
+});

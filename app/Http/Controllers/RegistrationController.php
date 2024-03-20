@@ -13,6 +13,6 @@ class RegistrationController extends Controller
         $data = $request->validated();
         $user = User::create($data);
         Auth::login($user);
-        return redirect()->to(route('registration'));
+        return redirect()->intended('/user');
     }
 }

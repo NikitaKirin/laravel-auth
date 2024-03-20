@@ -19,6 +19,6 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->to(route('user.settings'));
+        return redirect()->intended('/user');
     }
 }
