@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('gender', 10)->nullable();
             $table->string('email')->unique();
             $table->string('password');
+            $table->timestamp('password_at')->nullable();
             $table->rememberToken();
             $table->timestamp('online_at')->nullable();
             $table->timestamps();

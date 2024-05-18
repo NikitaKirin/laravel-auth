@@ -1,5 +1,8 @@
 <x-layout.settings>
 
-    @include('user.settings.profile')
+    <div class="space-y-12">
+        @include('user.settings.profile')
+        @include('user.settings.security')
+    </div>
 
 </x-layout.settings>
