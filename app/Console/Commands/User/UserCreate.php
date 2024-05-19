@@ -16,7 +16,7 @@ class UserCreate extends Command
         $user = new User();
         $user->first_name = $this->ask('Имя', 'Test');
         $user->email = $this->ask('Email', 'test@test.com');
-        $user->password = $this->ask('Password', 'test');
+        $user->password = $this->ask('PasswordController', 'test');
         $user->save();
         $this->info('Пользователь создан');
     }
