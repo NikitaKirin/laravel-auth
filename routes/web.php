@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\PasswordController;
+use App\Models\User;
+use App\Notifications\Password\ConfirmationNotification;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -27,6 +29,11 @@ Route::middleware('guest')->group(function () {
     Route::view('/password/{code}', 'password.edit')->name('password.edit');
     Route::post('/password/{code}', [PasswordController::class, 'update'])
         ->name('password.update');
+
+    Route::get('/test', function () {
+        return (new ConfirmationNotification())
+            ->toMail(User::query()->first());
+    });
 
 });
 
