@@ -3,8 +3,8 @@
 
     <x-card>
         <x-card.body>
-            <x-form action="{{ route('password.update', ['code' => 'test123']) }}" method="post">
-                <x-form.text type="password" placeholder="Введите новый пароль" autofocus />
+            <x-form action="{{ route('password.update', ['password' => $password]) }}" method="post">
+                <x-form.text type="password" name="password" placeholder="Введите новый пароль" autofocus />
                 <x-form.item>
                     <x-button type="submit">Обновить пароль</x-button>
                 </x-form.item>

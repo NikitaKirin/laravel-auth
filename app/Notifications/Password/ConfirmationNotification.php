@@ -3,16 +3,19 @@
 namespace App\Notifications\Password;
 
 use App\Models\User;
+use App\Models\Password;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class ConfirmationNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct()
+    public function __construct(
+        private readonly Password $password,
+    )
     {
     }
 
@@ -23,7 +26,7 @@ class ConfirmationNotification extends Notification implements ShouldQueue
 
     public function toMail(User $notifiable): MailMessage
     {
-        $url = app_url('/test!');
+        $url = app_url("password/{$this->password->uuid}");
         return (new MailMessage())
             ->subject('Изменение пароля')
             ->greeting('Добрый день!')
