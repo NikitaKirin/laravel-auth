@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PasswordStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,10 @@ class Password extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'status' => PasswordStatusEnum::class,
+    ];
+
     public static function booted()
     {
         static::creating(function (Password $password) {
@@ -28,5 +33,14 @@ class Password extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function updateStatus(PasswordStatusEnum $status): bool
+    {
+        if($this->status->is($status)) {
+            return false;
+        }
+
+        return $this->update(['status' => $status]);
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use App\Console\Commands\Password\CleanUpPasswordCommand;
+use App\Console\Commands\Password\ExpirePasswordCommand;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+Schedule::command(ExpirePasswordCommand::class)
+    ->everyMinute();
+
+Schedule::command(CleanUpPasswordCommand::class)
+    ->everyMinute();
