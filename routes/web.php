@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\PasswordController;
-use App\Models\User;
-use App\Notifications\Password\ConfirmationNotification;
+use App\Http\Middleware\EmailConfirmedMiddleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\User\ProfileController;
-use App\Http\Controllers\User\PasswordController as UserPasswordController;
 use App\Http\Controllers\User\SettingsController;
+use App\Http\Controllers\User\PasswordController as UserPasswordController;
 
 Route::redirect('/', '/registration');
 
@@ -34,6 +34,8 @@ Route::middleware('guest')->group(function () {
         ->whereUuid('password');
 });
 
+Route::get('/email/confirmation', [EmailController::class, 'confirmation'])->name('email.confirmation');
+
 Route::middleware(['auth', 'online'])->group(function () {
 
     Route::redirect('/user', '/user/settings')->name('user');
@@ -41,10 +43,10 @@ Route::middleware(['auth', 'online'])->group(function () {
     Route::get('/user/settings', [SettingsController::class, 'index'])->name('user.settings');
 
     Route::get('/user/settings/profile', [ProfileController::class, 'edit'])
-        ->name('user.settings.profile.edit');
+        ->name('user.settings.profile.edit')->middleware(EmailConfirmedMiddleware::class);
 
     Route::post('/user/settings/profile', [ProfileController::class, 'update'])
-        ->name('user.settings.profile.update');
+        ->name('user.settings.profile.update')->middleware(EmailConfirmedMiddleware::class);
 
     Route::get('/user/settings/password', [UserPasswordController::class, 'edit'])
         ->name('user.settings.password.edit');

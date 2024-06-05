@@ -19,7 +19,7 @@
             </x-list.item>
             <x-list.item>
                 <x-slot:name>Пол</x-slot:name>
-                <x-slot:value>{{ $user->gender->name() }}</x-slot:value>
+                <x-slot:value>{{ $user->gender?->name() }}</x-slot:value>
                 <x-slot:action>
                     <x-link href="{{ route('user.settings.profile.edit') }}">Изменить</x-link>
                 </x-slot:action>

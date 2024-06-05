@@ -9,9 +9,12 @@
         <div class="sm:mx-auto sm:w-full sm:max-w-xl mt-3">
             {{ $slot }}
 
-            <div class="p-4 text-center text-sm text-gray-500">
-                {{ $crosslink }}
-            </div>
+            @isset($crosslink)
+                <div class="p-4 text-center text-sm text-gray-500">
+                    {{ $crosslink }}
+                </div>
+            @endisset
+
         </div>
 
     </div>

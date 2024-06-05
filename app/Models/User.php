@@ -22,6 +22,7 @@ class User extends Authenticatable
         'last_name',
         'gender',
         'email',
+        'email_confirmed_at',
         'password',
         'password_at',
         'online_at',
@@ -46,6 +47,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'password_confirmed_at' => 'datetime',
             'password' => 'hashed',
             'online_at' => 'datetime',
             'password_at' => 'datetime',
@@ -68,5 +70,10 @@ class User extends Authenticatable
             'password' => $password,
             'password_at' => now(),
         ]);
+    }
+
+    public function isEmailConfirmed(): bool
+    {
+        return (bool) $this->email_confirmed_at;
     }
 }
