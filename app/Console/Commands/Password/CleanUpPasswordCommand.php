@@ -5,7 +5,6 @@ namespace App\Console\Commands\Password;
 use App\Enums\PasswordStatusEnum;
 use App\Models\Password;
 use Illuminate\Console\Command;
-use SebastianBergmann\Type\VoidType;
 
 class CleanUpPasswordCommand extends Command
 {

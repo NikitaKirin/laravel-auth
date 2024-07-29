@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PasswordStatusEnum: string
+enum EmailStatusEnum: string 
 {
     case pending = 'pending';
     case completed = 'completed';
