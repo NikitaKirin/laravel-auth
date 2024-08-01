@@ -76,4 +76,9 @@ class User extends Authenticatable
     {
         return (bool) $this->email_confirmed_at;
     }
+
+    public function confirmEmail(): void
+    {
+        $this->update(['email_confirmed_at' => now()]);
+    }
 }

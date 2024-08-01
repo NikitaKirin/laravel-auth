@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Password;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Password\StoreRequest;
-use App\Notifications\Password\ConfirmationNotification;
+use App\Notifications\Password\PasswordConfirmationNotification;
 use Illuminate\Support\Facades\Auth;
 
 class PasswordController extends Controller
@@ -31,7 +31,7 @@ class PasswordController extends Controller
             ->first();
 
         $password = Password::create(compact('email', 'ip') + ['user_id' => $user?->id]);
-        $user?->notify(new ConfirmationNotification($password));
+        $user?->notify(new PasswordConfirmationNotification($password));
         return to_route('password.confirm');
     }
 

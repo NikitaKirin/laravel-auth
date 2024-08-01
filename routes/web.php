@@ -34,7 +34,14 @@ Route::middleware('guest')->group(function () {
         ->whereUuid('password');
 });
 
-Route::get('/email/confirmation', [EmailController::class, 'confirmation'])->name('email.confirmation');
+Route::get('/email/confirmation', [EmailController::class, 'confirmation'])
+    ->middleware('auth')
+    ->name('email.confirmation');
+Route::post('/email/send', [EmailController::class, 'send'])
+    ->name('email.confirmation.send');
+Route::get('/email/{email:uuid}', [EmailController::class, 'confirm'])
+    ->name('email.confirm')
+    ->whereUuid('email');
 
 Route::middleware(['auth', 'online'])->group(function () {
 

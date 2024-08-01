@@ -5,9 +5,10 @@ namespace App\Listeners\User;
 use App\Enums\EmailStatusEnum;
 use App\Events\User\UserCreatedEvent;
 use App\Models\Email;
+use App\Notifications\Email\EmailConfirmationNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendConfirmEmailNotification implements ShouldQueue
+class SendConfirmEmailNotificationListener implements ShouldQueue
 {
 
     public function handle(UserCreatedEvent $event): void
@@ -21,7 +22,8 @@ class SendConfirmEmailNotification implements ShouldQueue
             'user_id' => $event->user->id,
             'status' => EmailStatusEnum::pending,
         ]);
-        
-        dd($email);
+
+        $notification = new EmailConfirmationNotification($email);
+        $event->user->notify($notification);
     }
 }
