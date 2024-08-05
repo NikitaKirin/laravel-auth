@@ -12,7 +12,7 @@
             <x-link href="#" x-data x-on:click.prevent="$refs.form.submit()">
                 Отправить еще раз
 
-                <x-form class="d-none" x-ref="form" action="{{ route('email.confirmation.send') }}" method="post" />
+                <x-form class="d-none" x-ref="form" action="{{ route('email.confirmation.send', $email->uuid) }}" method="post" />
             </x-link>
         </x-slot:crosslink>
     @endunless

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Email\SendConfirmationNotificationAction;
-use App\Enums\EmailStatusEnum;
-use App\Models\Email;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Email;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Enums\EmailStatusEnum;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Notifications\Email\EmailConfirmationNotification;
 
 class EmailController extends Controller
 {
@@ -22,12 +22,17 @@ class EmailController extends Controller
         if ($user instanceof User && $user->isEmailConfirmed()) {
             return redirect()->route('user');
         }
-
-        (new SendConfirmationNotificationAction($user))->run();
-        return view('email.confirmation');
+        $email = Email::query()->firstOrCreate(
+            [
+                'user_id' => $user->id,
+                'value' => $user->email,
+                'status' => EmailStatusEnum::pending,
+            ],
+        );
+        return view('email.confirmation', ['email' => $email]);
     }
 
-    public function send(Request $request)
+    public function send(Request $request, Email $email)
     {
         if (session('email-confirmation-sent')) {
             return back();
@@ -39,12 +44,12 @@ class EmailController extends Controller
         $user = Auth::user();
         abort_if($user->isEmailConfirmed(), 404);
 
-        (new SendConfirmationNotificationAction($user))->run();
+        $user->notify(new EmailConfirmationNotification($email));
         session(['email-confirmation-sent' => now()]);
         return back();
     }
 
-    public function confirm(Request $request, Email $email)
+    public function link(Request $request, Email $email)
     {
         abort_if($email->user->isEmailConfirmed(), 404);
         abort_unless($email->status->is(EmailStatusEnum::pending), 404);
