@@ -19,4 +19,4 @@ class UpdateRequest extends FormRequest
             'password' => ['required', Password::defaults()],
         ];
     }
-}      
+}

@@ -28,7 +28,7 @@ class Password extends Model
 
     public function updateStatus(PasswordStatusEnum $status): bool
     {
-        if($this->status->is($status)) {
+        if ($this->status->is($status)) {
             return false;
         }
 

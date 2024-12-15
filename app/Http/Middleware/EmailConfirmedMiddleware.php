@@ -13,8 +13,8 @@ class EmailConfirmedMiddleware
     {
         /** @var User */
         $user = $request->user();
-        
-        if(!$user->isEmailConfirmed()) {
+
+        if (!$user->isEmailConfirmed()) {
             return redirect()->guest(route('email.confirmation'));
         }
 

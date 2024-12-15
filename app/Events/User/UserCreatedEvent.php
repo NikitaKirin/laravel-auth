@@ -9,7 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 
 class UserCreatedEvent implements ShouldQueueAfterCommit
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable;
+    use SerializesModels;
 
     public function __construct(
         public User $user,

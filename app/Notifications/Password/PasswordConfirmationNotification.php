@@ -15,8 +15,7 @@ class PasswordConfirmationNotification extends Notification implements ShouldQue
 
     public function __construct(
         private readonly Password $password,
-    )
-    {
+    ) {
     }
 
     public function via(object $notifiable): array

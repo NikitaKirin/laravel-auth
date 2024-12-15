@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 
 class CleanUpPasswordCommand extends Command
 {
-
     protected $signature = 'password:clean-up';
 
 

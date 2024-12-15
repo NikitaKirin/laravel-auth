@@ -15,7 +15,7 @@ class RegistrationController extends Controller
         $user = User::create($data);
 
         event(new UserCreatedEvent($user));
-        
+
         Auth::login($user);
         return redirect()->intended('/user');
     }

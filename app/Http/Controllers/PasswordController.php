@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PasswordController extends Controller
 {
-
     public function edit(Password $password)
     {
         abort_unless($password->user_id, 404);
