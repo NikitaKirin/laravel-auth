@@ -36,7 +36,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->prefix('/email')->as('email.confirmation')->group(function () {
 
-    Route::get('/confirmation', [EmailController::class, 'confirmation']);
+    Route::get('/confirmation', [EmailController::class, 'index']);
     Route::post('/{email:uuid}/send', [EmailController::class, 'send'])
         ->name('.send')
         ->whereUuid('email');
@@ -44,6 +44,10 @@ Route::middleware('auth')->prefix('/email')->as('email.confirmation')->group(fun
         ->name('.link')
         ->withoutMiddleware('auth')
         ->whereUuid('email');
+    Route::post('/{email:uuid}/code', [EmailController::class, 'code'])
+        ->name('.code')
+        ->whereUuid('email');
+
 
 });
 

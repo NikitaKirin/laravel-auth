@@ -5,12 +5,10 @@ namespace App\Models;
 use App\Enums\EmailStatusEnum;
 use App\Traits\BelongsToUser;
 use App\Traits\HasUuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Email extends Model
 {
-    use HasFactory;
     use HasUuid;
     use BelongsToUser;
 
@@ -19,10 +17,12 @@ class Email extends Model
         'value',
         'status',
         'user_id',
+        'code',
     ];
 
     protected $casts = [
         'status' => EmailStatusEnum::class,
+        'code' => 'encrypted',
     ];
 
     public function updateStatus(EmailStatusEnum $status): bool
@@ -32,5 +32,12 @@ class Email extends Model
         }
 
         return $this->update(['status' => $status]);
+    }
+
+    public static function booted(): void
+    {
+        self::creating(function (Email $email) {
+            $email->code = code();
+        });
     }
 }

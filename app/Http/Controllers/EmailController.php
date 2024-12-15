@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Email;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Enums\EmailStatusEnum;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Notifications\Email\EmailConfirmationNotification;
 
 class EmailController extends Controller
 {
-    public function confirmation(Request $request): View|RedirectResponse
+    public function index(Request $request): View|RedirectResponse
     {
-        /**
-         * @var User
-         */
         $user = $request->user();
-        if ($user instanceof User && $user->isEmailConfirmed()) {
+        if ($user->isEmailConfirmed()) {
             return redirect()->route('user');
         }
         $email = Email::query()->firstOrCreate(
@@ -38,11 +33,9 @@ class EmailController extends Controller
             return back();
         }
 
-        /**
-         * @var User
-         */
-        $user = Auth::user();
+        $user = $request->user();
         abort_if($user->isEmailConfirmed(), 404);
+        abort_unless($email->status->is(EmailStatusEnum::pending), 404);
 
         $user->notify(new EmailConfirmationNotification($email));
         session(['email-confirmation-sent' => now()]);
@@ -53,6 +46,24 @@ class EmailController extends Controller
     {
         abort_if($email->user->isEmailConfirmed(), 404);
         abort_unless($email->status->is(EmailStatusEnum::pending), 404);
+
+        $email->user->confirmEmail();
+        $email->updateStatus(EmailStatusEnum::completed);
+        return redirect()->intended('/user');
+    }
+
+    public function code(Request $request, Email $email)
+    {
+        abort_if($email->user->isEmailConfirmed(), 404);
+        abort_unless($email->status->is(EmailStatusEnum::pending), 404);
+
+        $validated = $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        if ($validated['code'] !== $email->code) {
+            return back()->withErrors(['code' => 'Неверный код']);
+        }
 
         $email->user->confirmEmail();
         $email->updateStatus(EmailStatusEnum::completed);

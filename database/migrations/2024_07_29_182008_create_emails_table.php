@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->string('value');
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('status')->default(EmailStatusEnum::pending->value);
+            $table->string('code')->nullable();
             $table->timestamps();
         });
     }
