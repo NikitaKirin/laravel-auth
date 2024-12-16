@@ -40,7 +40,7 @@ Route::middleware('auth')->prefix('/email')->as('email.')->group(function () {
     Route::post('/{email:uuid}/send', [EmailController::class, 'send'])
         ->name('confirmation.send')
         ->whereUuid('email');
-    Route::match(['get', 'post'],'/{email:uuid}/confirm', [EmailController::class, 'confirm'])
+    Route::match(['get', 'post'], '/{email:uuid}/confirm', [EmailController::class, 'confirm'])
         ->name('confirm')
         ->withoutMiddleware('auth')
         ->whereUuid('email');
@@ -64,6 +64,9 @@ Route::middleware(['auth', 'online'])->group(function () {
 
     Route::post('/user/settings/password', [UserPasswordController::class, 'update'])
         ->name('user.settings.password.update');
+
+    Route::view('/user/settings/email/edit', 'user.settings.email.edit')
+        ->name('user.settings.email.edit');
 
 
     Route::post('/logout', LogoutController::class)->name('logout');
