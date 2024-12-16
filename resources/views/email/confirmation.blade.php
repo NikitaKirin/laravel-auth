@@ -8,7 +8,7 @@
             <div class="pt-4">
                 Или введите код подтверждения:
 
-                <x-form class="mt-3" method="post" action="{{ route('email.confirmation.code', $email->uuid) }}">
+                <x-form class="mt-3" method="post" action="{{ route('email.confirm', $email->uuid) }}">
                     <div class="grid grid-cols-5 gap-x-4">
                         <div class="col-span-3">
                             <x-form.text inputmode="decimal" placeholder="123456" name="code" />

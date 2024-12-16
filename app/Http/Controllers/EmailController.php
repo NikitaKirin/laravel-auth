@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Email;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Enums\EmailStatusEnum;
@@ -33,7 +34,7 @@ class EmailController extends Controller
             return back();
         }
 
-        $user = $request->user();
+        $user = $email->user;
         abort_if($user->isEmailConfirmed(), 404);
         abort_unless($email->status->is(EmailStatusEnum::pending), 404);
 
@@ -42,26 +43,21 @@ class EmailController extends Controller
         return back();
     }
 
-    public function link(Request $request, Email $email)
+    public function confirm(Request $request, Email $email): RedirectResponse
     {
         abort_if($email->user->isEmailConfirmed(), 404);
         abort_unless($email->status->is(EmailStatusEnum::pending), 404);
 
-        $email->user->confirmEmail();
-        $email->updateStatus(EmailStatusEnum::completed);
-        return redirect()->intended('/user');
-    }
-
-    public function code(Request $request, Email $email)
-    {
-        abort_if($email->user->isEmailConfirmed(), 404);
-        abort_unless($email->status->is(EmailStatusEnum::pending), 404);
-
-        $validated = $request->validate([
+        $validator = Validator::make(['code' => $request->input('code')], [
             'code' => 'required|string',
         ]);
 
-        if ($validated['code'] !== $email->code) {
+        if ($validator->fails()) {
+            return to_route('email.confirmation')
+                ->withErrors(['code' => $validator->errors()->first()]);
+        }
+
+        if ($request->input('code') !== $email->code) {
             return back()->withErrors(['code' => 'Неверный код']);
         }
 
