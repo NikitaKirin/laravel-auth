@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,7 +12,7 @@ class EmailConfirmedMiddleware
     {
         $user = $request->user();
 
-        if (is_null($user->email) || !$user->isEmailConfirmed()) {
+        if (!is_null($user->email) && !$user->isEmailConfirmed()) {
             return redirect()->guest(route('email.confirmation'));
         }
 

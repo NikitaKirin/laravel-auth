@@ -3,7 +3,6 @@
 namespace App\Notifications\Email;
 
 use App\Models\Email;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,7 +24,7 @@ class EmailConfirmationNotification extends Notification implements ShouldQueue
         return ['mail'];
     }
 
-    public function toMail(User $notifiable): MailMessage
+    public function toMail(): MailMessage
     {
         $message = (new MailMessage())
             ->subject('Подтверждение e-mail')

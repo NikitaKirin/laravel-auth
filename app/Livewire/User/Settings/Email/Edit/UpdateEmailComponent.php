@@ -7,12 +7,11 @@ use App\Models\Email;
 use App\Models\User;
 use App\Notifications\Email\EmailConfirmationNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
-
-use function Psy\debug;
 
 class UpdateEmailComponent extends Component
 {
@@ -47,10 +46,9 @@ class UpdateEmailComponent extends Component
             'status' => EmailStatusEnum::pending,
         ]);
         $this->uuid = $email->uuid;
-//        dd($email);
         $mailMessage = (new EmailConfirmationNotification($email))->withoutLink();
-        $this->user->notify($mailMessage);
-
+        Notification::route('mail', $this->email)
+            ->notify($mailMessage);
         $this->currentStep = 'confirm';
     }
 
