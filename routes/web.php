@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SocialController;
 use App\Http\Middleware\EmailConfirmedMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
@@ -22,6 +23,11 @@ Route::middleware('guest')->group(function () {
     Route::view('/login', 'login.index')->name('login');
 
     Route::post('/login', LoginController::class)->name('login.store');
+
+    Route::get('/auth/social/{driver}/redirect', [SocialController::class, 'redirect'])
+        ->name('auth.social.redirect');
+    Route::get('/auth/social/{driver}/callback', [SocialController::class, 'callback'])
+        ->name('auth.social.callback');
 
     Route::view('/password', 'password.index')->name('password');
     Route::post('/password', [PasswordController::class, 'store'])->name('password.store');

@@ -11,10 +11,9 @@ class EmailConfirmedMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var User */
         $user = $request->user();
 
-        if (!$user->isEmailConfirmed()) {
+        if (is_null($user->email) || !$user->isEmailConfirmed()) {
             return redirect()->guest(route('email.confirmation'));
         }
 

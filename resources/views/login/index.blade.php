@@ -32,6 +32,7 @@
                     <x-button type="submit">Войти</x-button>
                 </x-form.item>
             </x-form>
+            @include('includes.socials')
         </x-card.body>
     </x-card>
 
