@@ -34,6 +34,11 @@ class Email extends Model
         return $this->update(['status' => $status]);
     }
 
+    public function complete(): bool
+    {
+        return $this->updateStatus(EmailStatusEnum::completed);
+    }
+
     public static function booted(): void
     {
         self::creating(function (Email $email) {

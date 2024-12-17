@@ -82,4 +82,12 @@ class User extends Authenticatable
     {
         $this->update(['email_confirmed_at' => now()]);
     }
+
+    public function updateEmail(string $email): void
+    {
+        $this->update([
+            'email' => $email,
+            'email_confirmed_at' => now(),
+        ]);
+    }
 }
