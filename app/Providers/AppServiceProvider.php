@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use SocialiteProviders\Manager\SocialiteWasCalled;
+use SocialiteProviders\VKontakte\Provider as VkontakteProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->setPasswordDefaults();
+        $this->initExtendSocialiteDrivers();
     }
 
     private function setPasswordDefaults(): void
@@ -29,6 +33,13 @@ class AppServiceProvider extends ServiceProvider
                     ->symbols()
                     ->uncompromised()
                 : $rule;
+        });
+    }
+
+    private function initExtendSocialiteDrivers(): void
+    {
+        Event::listen(function (SocialiteWasCalled $event) {
+            $event->extendSocialite('vkontakte', VkontakteProvider::class);
         });
     }
 }

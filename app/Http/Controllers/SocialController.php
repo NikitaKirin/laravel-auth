@@ -23,7 +23,7 @@ class SocialController extends Controller
     public function callback(SocialDriverEnum $driver): RedirectResponse
     {
         try {
-            $githubUser = Socialite::driver($driver->value)->user();
+            $driverUser = Socialite::driver($driver->value)->user();
         } catch (Exception $e) {
             report($e);
             return redirect()->to(Session::get('previousUrl'));
@@ -31,7 +31,7 @@ class SocialController extends Controller
 
         $social = Social::query()->firstOrCreate([
             'driver' => $driver->value,
-            'driver_id' => $githubUser->getId(),
+            'driver_id' => $driverUser->getId(),
         ]);
         if (is_null($social->user_id)) {
             $user = User::create(['password' => Str::random(12)]);
