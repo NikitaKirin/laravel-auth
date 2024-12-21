@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SocialController;
+use App\Http\Controllers\User\TwoFAController;
 use App\Http\Middleware\EmailConfirmedMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
@@ -74,6 +75,12 @@ Route::middleware(['auth', 'online'])->group(function () {
     Route::view('/user/settings/email/edit', 'user.settings.email.edit')
         ->name('user.settings.email.edit');
 
+    Route::get('/user/settings/two-fa', [TwoFAController::class, 'index'])
+        ->name('user.settings.two-fa.index');
+    Route::post('/user/settings/two-fa/enable', [TwoFAController::class, 'enable'])
+        ->name('user.settings.two-fa.enable');
+    Route::post('/user/settings/two-fa/disable', [TwoFAController::class, 'disable'])
+        ->name('user.settings.two-fa.disable');
 
     Route::post('/logout', LogoutController::class)->name('logout');
 

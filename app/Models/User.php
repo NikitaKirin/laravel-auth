@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\GenderEnum;
+use App\Traits\HasTwoFactoryGoogleConfirmation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,6 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory;
     use Notifiable;
+    use HasTwoFactoryGoogleConfirmation;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +29,8 @@ class User extends Authenticatable
         'password',
         'password_at',
         'online_at',
+        'google_confirmation_enable',
+        'google_confirmation_secret',
     ];
 
     /**
@@ -53,6 +57,8 @@ class User extends Authenticatable
             'online_at' => 'datetime',
             'password_at' => 'datetime',
             'gender' => GenderEnum::class,
+            'google_confirmation_secret' => 'encrypted',
+            'google_confirmation_enable' => 'boolean'
         ];
     }
 
